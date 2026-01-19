@@ -25,7 +25,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
           <div className="py-5 transition-transform hover:rotate-2 hover:scale-110">
             <Image
-              src="/illustration.png"
+              src="/Illustration.png"
               alt="illustration"
               height={342}
               width={342}
