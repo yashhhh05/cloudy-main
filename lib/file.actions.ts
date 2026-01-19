@@ -389,6 +389,15 @@ export const getTotalSpaceUsed = async () => {
     return parseStringify(totalSpace);
   } catch (error) {
     console.error("Error calculating total space used:", error);
+    return {
+        image: { size: 0, latestDate: "" },
+        document: { size: 0, latestDate: "" },
+        video: { size: 0, latestDate: "" },
+        audio: { size: 0, latestDate: "" },
+        other: { size: 0, latestDate: "" },
+        used: 0,
+        all: 2 * 1024 * 1024 * 1024,
+    };
   }
 };
 
