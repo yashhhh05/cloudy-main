@@ -30,6 +30,7 @@ const Search = () => {
     }
 
     const fetchFiles = async () => {
+       setResults([]); // Clear previous results immediately to avoid "Ghosting"
       try {
         const { getSearchResults } = await import("@/lib/actions/semantic.actions");
         
@@ -48,8 +49,9 @@ const Search = () => {
         const standardResults = standardRes.documents || [];
 
         // Merge results (prevent duplicates)
-        // We prioritize Semantic results, then append Standard results
-        const combinedFiles = [...semanticResults, ...standardResults];
+        // Merge results (prevent duplicates)
+        // We prioritize Standard results (Accuracy), then append Semantic results (Discovery)
+        const combinedFiles = [...standardResults, ...semanticResults];
         
         // Deduplicate by $id
         const uniqueFiles = Array.from(new Map(combinedFiles.map(file => [file.$id, file])).values());

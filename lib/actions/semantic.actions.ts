@@ -71,22 +71,26 @@ export const processFile = async (fileId: string, bucketFileId: string) => {
 
     // 2. Extract & Summarize
     let context = "";
-    
+    let contentToEmbed = "";
+
     if (file.mimeType.includes("pdf")) {
       const summary = await processPDF(fileUrl, groq);
       context = `Filename: ${fileName} | Type: PDF | Summary: ${summary}`;
+      contentToEmbed = summary;
     } else if (file.mimeType.includes("image")) {
       const description = await processImage(fileUrl, groq);
       context = `Filename: ${fileName} | Type: Image | Description: ${description}`;
+      contentToEmbed = description;
     } else {
       // Generic fallback for other files
       context = `Filename: ${fileName} | Type: ${file.mimeType} | Size: ${file.sizeOriginal}`;
+      contentToEmbed = context;
     }
 
     console.log("Generated Context:", context);
 
-    // 3. Create Embedding (LOCALLY)
-    const vector = await generateLocalEmbedding(context);
+    // 3. Create Embedding (LOCALLY) - EMBED PURE CONTENT ONLY
+    const vector = await generateLocalEmbedding(contentToEmbed);
 
     // 4. Store in Upstash
     await index.upsert({
@@ -184,7 +188,7 @@ export const getSearchResults = async (query: string) => {
     });
 
     // Filter results with low confidence (Noise)
-    const validMatches = upstashResult.filter((match: any) => match.score > 0.4);
+    const validMatches = upstashResult.filter((match: any) => match.score > 0.6);
 
     if (!validMatches || validMatches.length === 0) {
       return [];
