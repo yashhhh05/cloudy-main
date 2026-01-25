@@ -14,12 +14,12 @@ const SIdebar = ({fullName, email, avatar}: {fullName: string; email: string; av
   return (
     <aside className='sidebar'>
         <Link href="/">
-             <Image src="/assets/icons/logo-full-brand.svg" width={160} height={50} alt="home" className='hidden h-auto lg:block' />
-             <Image src="/assets/icons/logo-brand.svg" width={50} height={50} alt="home" className='lg:hidden' /> {/* image for mobile screen */}
+             <Image src="/Mystic (1).png" width={90} height={45} alt="home" className='hidden h-auto lg:block' />
+             <Image src="/Mystic (1).png" width={50} height={50} alt="home" className='lg:hidden' /> {/* image for mobile screen */}
         </Link>
 
         <nav className='sidebar-nav'>
-            <ul className='flex fle-1 flex-col gap-6'>
+            <ul className='flex flex-1 flex-col gap-6'>
                {navItems.map((item)=>(
                 <Link key={item.name} href={item.url} className='lg:w-full'>
                 <li className={cn("sidebar-nav-item", pathname === item.url && "shad-active")}>

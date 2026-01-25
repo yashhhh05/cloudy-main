@@ -6,16 +6,15 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex min-h-screen">
       {/* Left side illustration panel (visible on lg+) hidden*/}
       <section className="bg-brand p-10 hidden lg:flex lg:w-1/2 xl:w-2/5 items-center justify-center">
-        <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-12">
+        <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-4">
           <div className="flex flex-row gap-2 items-center">
             <Image
-              src="/Logo.svg"
+              src="/Mystic.png"
               alt="logo"
-              height={90}
-              width={90}
+              height={150}
+              width={150}
               className="h-auto"
             />
-            <h1 className="text-5xl font-bold text-white">Cloudy</h1>
           </div>
 
           <div className="space-y-5 text-white">
@@ -37,15 +36,14 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Right side (children content) */}
       <section className="flex flex-1 flex-col items-center bg-white p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
-        <div className="mb-16 lg:hidden flex items-center gap-4 bg-brand p-2 rounded-full">
+        <div className="mb-10 lg:hidden flex items-center gap-4">
           <Image
-            src="/Logo.svg"
+            src="/Mystic (1).png"
             alt="logo"
-            height={82}
-            width={82}
-            className="h-auto w-[82px]"
+            height={160}
+            width={160}
+            className="h-auto w-[160px]"
           />
-          <h1 className="text-3xl font-bold text-white">Cloudy</h1>
         </div>
         {children}
       </section>

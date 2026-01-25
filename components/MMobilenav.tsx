@@ -27,7 +27,7 @@ const MMobilenav = ({ownerId,accountID,fullName,avatar,email}: {ownerId: string;
 
   return (
     <header className='mobile-header'>
-        <Image src="/assets/icons/logo-full-brand.svg" width={120} height={52} alt="logo" className='h-auto'/>
+        <Image src="/Mystic (1).png" width={60} height={60} alt="logo" className='h-auto'/>
         
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>

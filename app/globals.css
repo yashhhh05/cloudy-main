@@ -409,10 +409,10 @@
 
   /* Header */
   .header {
-    @apply hidden items-center justify-between gap-5 p-5 sm:flex lg:py-7 xl:gap-10;
+    @apply flex items-center justify-between gap-5 p-5 lg:py-7 xl:gap-10;
   }
   .header-wrapper {
-    @apply flex items-center justify-center min-w-fit gap-4;
+    @apply hidden sm:flex items-center justify-center min-w-fit gap-4;
   }
   .sign-out-button {
     @apply flex items-center justify-center h-[52px] min-w-[54px] items-center rounded-full bg-brand/10 p-0 text-brand shadow-none transition-all hover:bg-brand/20;
@@ -448,7 +448,7 @@
 
   /* Search */
   .search {
-    @apply relative w-full md:max-w-[480px];
+    @apply relative w-full sm:max-w-[480px] md:max-w-[480px] ;
   }
   .search-input-wrapper {
     @apply flex h-[52px] flex-1 items-center gap-3 rounded-full px-4 shadow-drop-3;

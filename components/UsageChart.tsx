@@ -94,9 +94,14 @@ export const UsageChart = ({ used = 0 }: { used: number }) => {
                 }}
               />
             </PolarRadiusAxis>
-            <ChartTooltip
+           <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  valueFormatter={(value) => convertFileSize(Number(value))}
+                />
+              }
             />
           </RadialBarChart>
         </ChartContainer>
