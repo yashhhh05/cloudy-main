@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "The only storage solution you need",
 };
 
+export const maxDuration = 60; // Allow 60 seconds for AI model loading
+
 export default function RootLayout({
   children,
 }: Readonly<{
