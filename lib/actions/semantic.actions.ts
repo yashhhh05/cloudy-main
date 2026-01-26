@@ -16,7 +16,16 @@ let pipelinePromise: any = null;
 const getPipeline = async () => {
     if (!pipelinePromise) {
         // Dynamic import to avoid build-time issues
-       const { pipeline } = await import("@xenova/transformers");
+       const { pipeline, env } = await import("@xenova/transformers");
+
+       // CRITICAL: Vercel serverless functions have a read-only filesystem.
+       // We must use /tmp (or os.tmpdir) for writing/caching models.
+       const os = await import("os");
+       const path = await import("path");
+       
+       env.cacheDir = path.join(os.tmpdir(), "transformers_cache");
+       env.allowLocalModels = false; // Force download from Hub to /tmp if not found
+
        pipelinePromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
     }
     return pipelinePromise;
