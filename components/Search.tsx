@@ -58,7 +58,12 @@ const Search = () => {
 
         if (active) {
           setResults(uniqueFiles);
-          setOpen(true);
+          // Only open dropdown if the query changed from what's in the URL (user typing)
+          // or if the user actively explicitly cleared it and typed again.
+          // On page load/nav, query === searchQuery, so we keep it closed.
+          if (query !== searchQuery) {
+             setOpen(true);
+          }
         }
       } catch (error) {
          console.error("Search failed:", error);
@@ -115,7 +120,6 @@ const Search = () => {
                           onClick={() => {
                             setOpen(false);
                             setResults([]);
-                            setQuery(file.name);
                             router.push(`/${file.type === 'video' || file.type === 'audio' ? 'media' : file.type + 's'}?query=${file.name}`);
                           }}>
                             <div className='flex items-center gap-4 cursor-pointer'> 

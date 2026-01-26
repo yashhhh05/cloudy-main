@@ -500,4 +500,77 @@ The user observed that **Semantic Search works perfectly for Images** but not ye
 - **The Cost:**
   - **Audio:** Requires OpenAI Whisper or similar. While cheap, it's an extra API call and adds significant latency.
   - **Video:** Requires extracting audio frames (heavy compute) or using expensive Video-To-Text models (like Gemini Pro Vision or GPT-4o).
-- **Why we skipped it:** To keep the project "Lite" and free to host, we focused on the highest-impact visual search (Images) which works within the constraints of the free Local Vision model.
+    To keep the project "Lite" and free to host, we focused on the highest-impact visual search (Images) which works within the constraints of the free Local Vision model.
+
+# 7. Deployment & Stability Improvements
+
+## The Deployment Challenge: Vercel Read-Only Filesystem
+
+Initially, we tried to generate embeddings **locally** on the Vercel server using `@xenova/transformers`.
+
+### The Problem
+
+When deployed, Vercel Serverless Functions run in a **Read-Only** environment.
+
+1.  The library tried to download the AI model (`all-MiniLM-L6-v2`) to the local disk.
+2.  Vercel blocked this write operation.
+3.  The search functionality crashed silently or timed out in production, even though it worked locally.
+
+### The Pivot: Upstash Managed Embeddings
+
+To fix this reliably, we moved the "heavy lifting" to **Upstash**.
+
+- **Before:** We sent text -> Local Server (Calculated Vector) -> Upstash (Storage).
+- **After:** We send text -> Upstash (Calculates Vector AND Stores it).
+
+**Why this is better:**
+
+1.  **No Downloads:** Our server no longer needs to download 100MB+ AI models.
+2.  **Faster Cold Starts:** The function is purely code, no heavy initialization.
+3.  **Reliability:** Upstash handles the complexity of the embedding model.
+
+## UI Bug Fixes: "Ghost" Search Results
+
+Users noticed that clicking a search result would sometimes make the result "stick" or re-appear.
+
+### The Bug
+
+1.  User clicks a result (e.g., "vacation.jpg").
+2.  The `onClick` handler updated the **search bar text** to "vacation.jpg".
+3.  This state change triggered the `useEffect` hook.
+4.  The app immediately ran a **new search** for "vacation.jpg".
+5.  The dropdown re-opened with the result the user just clicked.
+
+### The Fix
+
+We updated `Search.tsx` to:
+
+1.  **Remove `setQuery`**: Clicking a result navigates to the file _without_ changing the search bar text.
+2.  **Smarter Opening**: The dropdown only opens if the user _types_ something new, not when the page loads with a URL query.
+
+This ensures a clean navigation experience without "stuck" menus.
+
+# Semantic search was failing
+
+The deployment issue was caused by how Vercel (and most serverless platforms) handles file permissions, which is very different from your local computer.
+
+Here is the breakdown of why the changes were necessary:
+
+1. The Problem: "Read-Only" File Systems
+   Locally: When you run npm run dev on your computer, the code can write files anywhere it wants. The @xenova/transformers library (which powers your semantic search) downloads the AI model (all-MiniLM-L6-v2) and saves it into your node_modules or a local cache folder so it doesn't have to download it every time.
+   On Vercel: When you deploy, your code runs in a "Serverless Function." These environments are Read-Only. This means your code cannot create new files or folders in the standard project directory.
+   The Error: When the Search Action tried to run for the first time, it attempted to download and save the model file. Vercel blocked this write operation, causing the search to crash silently or error out.
+2. The Solution: Using /tmp
+   Vercel provides exactly one folder where your code is allowed to write files: the Temporary Directory (accessed via os.tmpdir(), usually just /tmp).
+   What I changed:
+   typescript
+   // I imported the OS path utilities
+   const os = await import("os");
+   const path = await import("path");
+   // I explicitly told the AI library:
+   // "Do NOT try to save to the project folder. Save to the /tmp folder instead."
+   env.cacheDir = path.join(os.tmpdir(), "transformers_cache");
+   // I also set this to ensure it knows to download if the file isn't found
+   env.allowLocalModels = false;
+   Summary
+   I redirected the AI model's download path from the Restricted Project Folder (which caused the crash) to the Allowed Temporary Folder, ensuring the semantic search can download and run the model successfully in production.

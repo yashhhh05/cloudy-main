@@ -151,7 +151,7 @@ export const getSearchResults = async (query: string) => {
 
     // Filter results with low confidence
     // Note: Scores might differ between models, 0.5 is a safe generic baseline
-    const validMatches = upstashResult.filter((match: any) => match.score > 0.5);
+    const validMatches = upstashResult.filter((match: any) => match.score > 0.75);
 
     if (!validMatches || validMatches.length === 0) {
       return [];
