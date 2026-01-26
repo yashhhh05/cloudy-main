@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Cloudy",
+  title: "Mist Cloud",
   description: "The only storage solution you need",
 };
 

@@ -14,8 +14,8 @@ const SIdebar = ({fullName, email, avatar}: {fullName: string; email: string; av
   return (
     <aside className='sidebar'>
         <Link href="/">
-             <Image src="/Mystic (1).png" width={90} height={45} alt="home" className='hidden h-auto lg:block' />
-             <Image src="/Mystic (1).png" width={50} height={50} alt="home" className='lg:hidden' /> {/* image for mobile screen */}
+             <Image src="/mysticc.png" width={130} height={60} alt="home" className='hidden h-auto lg:block space-y-2' />
+             <Image src="/Mystic (1).png" width={50} height={50} alt="home" className='lg:hidden' /> {/* image for tab screen */}
         </Link>
 
         <nav className='sidebar-nav'>

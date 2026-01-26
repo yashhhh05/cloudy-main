@@ -6,10 +6,10 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="flex min-h-screen">
       {/* Left side illustration panel (visible on lg+) hidden*/}
       <section className="bg-brand p-10 hidden lg:flex lg:w-1/2 xl:w-2/5 items-center justify-center">
-        <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-4">
+        <div className="flex max-h-[800px] max-w-[430px] flex-col justify-center space-y-2">
           <div className="flex flex-row gap-2 items-center">
             <Image
-              src="/Mystic.png"
+              src="/Mist (1).png"
               alt="logo"
               height={150}
               width={150}
@@ -36,9 +36,9 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
       {/* Right side (children content) */}
       <section className="flex flex-1 flex-col items-center bg-white p-4 py-10 lg:justify-center lg:p-10 lg:py-0">
-        <div className="mb-10 lg:hidden flex items-center gap-4">
+        <div className="mb-16 lg:hidden flex items-center gap-4">
           <Image
-            src="/Mystic (1).png"
+            src="/mysticc.png"
             alt="logo"
             height={160}
             width={160}
